@@ -12,12 +12,16 @@
 package com.guzzservices.easydomain.ui.panel;
 
 import com.guzzservices.easydomain.ui.render.OnePageHtmlRenderContext;
+import com.guzzservices.easydomain.util.HelpUtil;
 import com.guzzservices.easydomain.util.NetUtil;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import org.lobobrowser.html.gui.HtmlPanel;
 import org.lobobrowser.html.test.SimpleUserAgentContext;
+import org.w3c.dom.html2.HTMLElement;
 
 /**
  *
@@ -56,8 +60,22 @@ public class URLLoadAndShowPanel extends javax.swing.JPanel {
     }
 
     public void reloadPage(){
-        final OnePageHtmlRenderContext context = new OnePageHtmlRenderContext(panel, new SimpleUserAgentContext()) ;
+        final OnePageHtmlRenderContext context = new OnePageHtmlRenderContext(panel, new SimpleUserAgentContext()){
 
+            public void linkClicked(HTMLElement linkNode, URL url, String target) {
+                if("native".equalsIgnoreCase(target)){
+                    try {
+                        HelpUtil.openURLInSystemBroswer(url.toURI());
+                    } catch (URISyntaxException ex) {
+                        Logger.getLogger(URLLoadAndShowPanel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }else{
+                    super.linkClicked(linkNode, url, target);
+                }
+            }
+           
+        } ;
+        
         Thread t = new Thread(
             new Runnable(){
 
