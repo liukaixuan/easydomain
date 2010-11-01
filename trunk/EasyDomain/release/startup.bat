@@ -1,2 +1,2 @@
 @echo off
-start .\jre\bin\javaw -jar dtym.jar
+start .\jre\bin\javaw -jar DDSProject.jar
