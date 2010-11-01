@@ -69,6 +69,9 @@ public class DDSProjectApp extends SingleFrameApplication {
     }
 
     protected void setupSystemTray(){
+        
+        org.jdesktop.application.ResourceMap resourceMap = org.jdesktop.application.Application.getInstance(com.guzzservices.easydomain.ui.frame.DDSProjectApp.class).getContext().getResourceMap(DDSProjectApp.class);
+
         final JFrame frame = mainFrameView.getFrame() ;
         
         try {
@@ -100,15 +103,15 @@ public class DDSProjectApp extends SingleFrameApplication {
 
             PopupMenu popup = new PopupMenu();
             
-            MenuItem showItem = new MenuItem("显示主界面");
+            MenuItem showItem = new MenuItem(resourceMap.getString("iconTray.showup"));
             showItem.addActionListener(showFrameListener);
             popup.add(showItem) ;
             
-            MenuItem exitItem = new MenuItem("退出");
+            MenuItem exitItem = new MenuItem(resourceMap.getString("iconTray.quit"));
             exitItem.addActionListener(exitListener);
             popup.add(exitItem) ;
 
-            trayIcon = new TrayIcon(image, "域名管理系统", popup);
+            trayIcon = new TrayIcon(image, resourceMap.getString("iconTray.appName"), popup);
             trayIcon.setImageAutoSize(true) ;
 
             trayIcon.addActionListener(showFrameListener);
@@ -279,6 +282,8 @@ public class DDSProjectApp extends SingleFrameApplication {
                                 frame.setVisible(true) ;
                                 frame.toFront() ;
                            }
+
+                           s.close() ;
                         } catch (Exception ex) {}
                     }
                 }
